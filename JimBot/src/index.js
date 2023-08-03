@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions, MessageManager, Embed, Collection } = require(`discord.js`);
 const { VoicePermissions } = require("oceanic.js");
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] }); 
-const prefix = 'k';
+const prefix = 'PREFIX';
 
 client.on("ready", () => {
     console.log("Bot is online");
@@ -127,4 +127,4 @@ const commandFolders = fs.readdirSync("./src/commands");
     client.handleCommands(commandFolders, "./src/commands");
 })(); */
 
-client.login(`MTA2NjUwNTI2NjUwMzM1NjQzNg.GOqvc8.1v1PKz2arDhHFUFLkQa4AUIgP6k7n8RWuqVf2g`);
+client.login(`TOKEN`);
