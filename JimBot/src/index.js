@@ -142,7 +142,12 @@ if (command === "purge") {
 
     if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) return message.channel.send("No >:("), console.log(`${member.user} tried using the **PURGE** command and failed`);
 
-    
+    const embed = new EmbedBuilder()
+    .setColor("Red")
+    .setTitle("Command not working")
+    .setDescription(`${member.user}, command has not been published yet, please try again later. \n\nReason: Jay needs to program it`)
+
+    message.channel.send({ embeds: [embed] });
 }
 
 /* const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith(".js"));
