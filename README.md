@@ -5,12 +5,14 @@ JimBot the DIscord Bot is a open-source, low effort bot that deals with (at the 
 **Current Commands:**
 - Kick
 - Ban and Unban
+- Timeouts
+- Purge (Not yet supported)
 
 **Future Commands:**
 - ChatGPT chatbot intergation
 - ChefGPT cooking intergation
 - Welcome
-- Timeouts
+
 - Image generation
 
 The bot is only being worked on by me and most of this stuff is from what I have learned from watching YT video lmao. 
