@@ -24,7 +24,8 @@ client.on("messageCreate", (message) => {
     // commands
 
     // test command
-    if (command === 'test') {
+        if (command === 'test') {
+        console.log("Prefix is working");
         message.channel.send("Bot Prefix is working")
     }
     //
@@ -83,6 +84,7 @@ client.on("messageCreate", (message) => {
     }
     //
 
+    // Kick command
     if (command === "kick") {
         const member = message.mentions.members.first() || message.guild.members.cache.get(argument[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === argument.slice(0).join(" " || x.user.username === argument[0]));
 
@@ -113,42 +115,74 @@ client.on("messageCreate", (message) => {
 
         message.channel.send({ embeds: [embed] });
     }
+    //
+
+    // Timeout command
+    if (command === "timeout") {
+        const member = message.mentions.members.first() || message.guild.members.cache.get(argument[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === argument.slice(0).join(" " || x.user.username === argument[0]));
+
+        if (!message.member.permissions.has(PermissionsBitField.Flags.KickMembers)) return message.channel.send("No >:("), console.log(`${member.user} tried using the **KICK** command and failed`);
+        if (!member) return message.channel.send("you must be joking?"), console.log("No member mentioned");
+        if (message.member === member) return message.channel.send("Why lmao?"), console.log("No reason given");
+        if (!member.kickable) return message.channel.send("You cannot timeout them!"), console.log(`Attempted timeout Member is better than ${member.user}`);
+
+        let reason = argument.slice(1).join(" ") || "Why has this person been subjected to such a terrible crime if no evidence has been presented???"
+
+        const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setTitle("YOU'RE IN TIMEOUT")
+        .setDescription(`${member.user} is in timout\n\nReason: ${reason}`)
+
+        member.timeout(60_000).catch(err => {
+            message.channel.send("There was an error putting this user in timeout")
+        })
+
+        message.channel.send({ embeds: [embed] });  
+    }
+    //
+
+    // Purge command
+    if (command === "purge") 
+    {
+        let amount = parseInt(args[0]);
+
+        if (isNaN(amount)) { // no amount given
+            console.log("No messages have been deleted");
+            return message
+                .reply(message, "commands.purge.messages.argMustBeNumber", args[0])
+                .then((msg) => {
+                    msg.delete({ timeout: 15000 });
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        } 
+        
+        else if (amount < 1 || amount > 100) { // There are too many or not enough messages to delete
+            return message
+                .reply(translate(message, "commands.purge.messages.argLimit"))
+                .then((msg) => {
+                    console.log("Too many/not enough messages were asked to be deleted");
+                    msg.delete({ timeout: 15000 });
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        } 
+        
+        else { // will delete the messages
+            console.log(amount + " messages have been deleted");
+            return message.channel.bulkDelete(amount)
+                .catch((err) => {});
+        }
+        
+        // enter command
+    }
+
+    // 
+
+    
 })
-
-if (command === "timeout") {
-    const member = message.mentions.members.first() || message.guild.members.cache.get(argument[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === argument.slice(0).join(" " || x.user.username === argument[0]));
-
-    if (!message.member.permissions.has(PermissionsBitField.Flags.KickMembers)) return message.channel.send("No >:("), console.log(`${member.user} tried using the **KICK** command and failed`);
-    if (!member) return message.channel.send("you must be joking?"), console.log("No member mentioned");
-    if (message.member === member) return message.channel.send("Why lmao?"), console.log("No reason given");
-    if (!member.kickable) return message.channel.send("You cannot timout them!"), console.log(`Attempted timeout Member is better than ${member.user}`);
-
-    let reason = argument.slice(1).join(" ") || "Why has this person been subjected to such a terrible punishment if no evidence has been given??";
-
-    const embed = new EmbedBuilder()
-    .setColor("Red")
-    .setTitle("YOU'RE IN TIMEOUT")
-    .setDescription(`${member.user} is in timeout\n\nReason: ${reason}`)
-
-    member.timout(60_000).catch(err => {
-        message.channel.send("There was an error putting this member in timeout")
-    })
-
-    message.channel.send({ embeds: [embed] });
-}
-
-if (command === "purge") {
-    const member = message.mentions.members.first() || message.guild.members.cache.get(argument[0]) || message.guild.members.cache.find(x => x.user.username.toLowerCase() === argument.slice(0).join(" " || x.user.username === argument[0]));
-
-    if (!message.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) return message.channel.send("No >:("), console.log(`${member.user} tried using the **PURGE** command and failed`);
-
-    const embed = new EmbedBuilder()
-    .setColor("Red")
-    .setTitle("Command not working")
-    .setDescription(`${member.user}, command has not been published yet, please try again later. \n\nReason: Jay needs to program it`)
-
-    message.channel.send({ embeds: [embed] });
-}
 
 /* const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith(".js"));
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js"));
